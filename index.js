@@ -3,7 +3,7 @@
 module.exports = function() {
 
     exports.actions = require('./actions')();
-    exports.schemata = require('./schemata')();
+    exports.schemata = require('./schemata');
 
     return exports;
   }();
