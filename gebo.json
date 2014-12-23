@@ -1,0 +1,10 @@
+{
+    "name":"gebo-basic-action",
+    "email":"gebo-basic-action@example.com",
+    "domain":"https://localhost",
+    "port":3000,
+    "httpsPort":3443,
+    "docs": "docs",
+    "testEmail": "gebo-basic-action-test@example.com",
+    "logLevel": "trace"
+}
