@@ -13,7 +13,7 @@ module.exports = function (grunt) {
                    '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
                    ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n',
         nodeunit: {
-            files: ['test/**/*.js']
+            files: ['test/**/*.js', '!test/**/mocks/*.js']
         },
     });
 
