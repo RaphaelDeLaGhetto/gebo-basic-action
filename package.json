@@ -34,7 +34,7 @@
     "fs-extra": "^0.13.0",
     "gebo-mongoose-connection": "*",
     "gebo-utils": "*",
-    "mongodb": "^1.4.26",
+    "mongodb": "^1.4.*",
     "nconf": "*",
     "q": "*",
     "winston": "*"
