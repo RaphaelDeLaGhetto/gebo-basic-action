@@ -44,7 +44,13 @@ module.exports = function() {
         // the gebo. If he is, however, then he can use traditional 
         // authentication to do a login and may have administrative 
         // privileges.
-        registrantId: { type: ObjectId, required: false, unique: true },
+        //
+        // 2014-12-30 It doesn't make sense that a field would be 
+        // optional and unique. This can't happen because the 
+        // default value will be null and therefor not unique
+        // as soon as another friendo is added. The big question
+        // is, why did this work before?
+        registrantId: { type: ObjectId, required: false },//, unique: true },
     
         // Candidates for removal
         // 2014-7-30
@@ -66,25 +72,6 @@ module.exports = function() {
         exports.friendoModel = friendoModel;
       }
     catch (error) {}
-    
-    
-    /**
-     * File schema
-     */
-//    var fileSchema = new Schema({
-//        name: { type: String, required: true, unique: true },
-//        resource: { type: String, required: false, unique: false },
-//        type: { type: String, required: false, unique: false },
-//        size: { type: Number, required: false, unique: false },
-//        lastModified: { type: Date, required: true, default: Date.now() },
-//      });
-//    
-//    // Export fileSchema model
-//    try {
-//        var fileModel = mongoose.model('File', fileSchema);
-//        exports.fileModel = fileModel;
-//      }
-//    catch (error) {}
     
     /**
      * Social commitment schema
