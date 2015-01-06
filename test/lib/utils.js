@@ -79,8 +79,8 @@ exports.saveFileToDb = {
         test.expect(6);
         utils.saveFileToDb({
                             path: '/tmp/pdf0.pdf',
-                            name: 'pdf0.pdf',
-                            type: 'application/pdf',
+                            originalname: 'pdf0.pdf',
+                            mimetype: 'application/pdf',
                             size: 16,
                         }, collection).
             then(function(file) {

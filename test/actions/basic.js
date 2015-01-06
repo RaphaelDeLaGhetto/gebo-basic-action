@@ -240,8 +240,8 @@ exports.save = {
                     { content: { data: { junk: 'I like to move it move it' } },
                       file: {
                             path: '/tmp/pdf0.pdf',
-                            name: 'pdf0.pdf',
-                            type: 'application/pdf',
+                            originalname: 'pdf0.pdf',
+                            mimetype: 'application/pdf',
                             size: 21,
                       }
                   }).
@@ -288,8 +288,8 @@ exports.save = {
 		              write: true },
                     { file: {
                             path: '/tmp/pdf0.pdf',
-                            name: 'pdf0.pdf',
-                            type: 'application/pdf',
+                            originalname: 'pdf0.pdf',
+                            mimetype: 'application/pdf',
                             size: 21,
                       }
                   }).
@@ -636,8 +636,8 @@ exports.cp = {
                                },
                       file: {
                             path: '/tmp/gebo-server-save-test-1.txt',
-                            name: 'gebo-server-save-test-1.txt',
-                            type: 'text/plain',
+                            originalname: 'gebo-server-save-test-1.txt',
+                            mimetype: 'text/plain',
                             size: 16,
                       }
                   }).
