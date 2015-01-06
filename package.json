@@ -29,9 +29,9 @@
     "test": "grunt nodeunit"
   },
   "dependencies": {
-    "bcrypt": "^0.8.0",
-    "extend": "^2.0.0",
-    "fs-extra": "^0.13.0",
+    "bcrypt": "*",
+    "extend": "*",
+    "fs-extra": "*",
     "gebo-mongoose-connection": "*",
     "gebo-utils": "*",
     "mongodb": "^1.4.*",
