@@ -177,57 +177,77 @@ module.exports = function() {
         if (verified.admin || verified.write) { 
           _getCollection(verified).
               then(function(collection) {
-                      // Does this collection exist?
-                      collection.count(function(err, count) {
-                          if (count === 0) {
-                            deferred.resolve({ error: 'Collection: ' + verified.resource + ' does not exist' });
-                          }
-                          else {
-                            var id = message.content.id;
-                            if (typeof id === 'string') {
-                              id = new mongo.ObjectID(message.content.id);
+                      // The requesting agent may only want to delete a file
+                      // from GridStore.
+                      // If this is the case, DEFAULT_ROOT_CONNECTION is expected to equal 'fs'
+                      if (collection.collectionName === GridStore.DEFAULT_ROOT_COLLECTION) {
+                        new GridStore(collection.db, message.content.id, 'r').open(function(err, gridStore) {
+                           if (err) {
+                             deferred.resolve({ error: err });
+                           }
+                           gridStore.unlink(function(err, results) {
+                               if (err) {
+                                 deferred.resolve({ error: err });
+                               }
+                               else {
+                                 deferred.resolve(results);
+                               }
+                             });
+                          });
+                      }
+                      else {
+                        // Does this collection exist?
+                        collection.count(function(err, count) {
+                            if (count === 0) {
+                              deferred.resolve({ error: 'Collection: ' + verified.resource + ' does not exist' });
                             }
-
-                            // Ugh, this has to be done so that any files attached
-                            // to the document will be removed too
-                            collection.findOne({ '_id': id }, function(err, doc) {
-                                if (err) {
-                                  deferred.resolve({ error: err });
-                                }
-                                else {
-                                  collection.remove({ _id: id },
-                                      function(err, ack) {
-                                          if (err || ack === 0) {
-                                            deferred.resolve({ error: 'Could not delete document: ' + message.content.id });
-                                          }
-                                          else {
-                                            // Check for an attached file.
-                                            // Remove it from the database
-                                            if (doc.fileId) {
-                                                new GridStore(collection.db, doc.fileId, 'r').open(function(err, gridStore) {
-                                                    if (err) {
-                                                      deferred.resolve({ error: err });
-                                                    }
-                                                    gridStore.unlink(function(err, results) {
-                                                        if (err) {
-                                                          deferred.resolve({ error: err });
-                                                        }
-                                                        else {
-                                                          deferred.resolve(results);
-                                                        }
-                                                      });
-                                                });
+                            else {
+                              var id = message.content.id;
+                              if (typeof id === 'string') {
+                                id = new mongo.ObjectID(message.content.id);
+                              }
+  
+                              // Ugh, this has to be done so that any files attached
+                              // to the document will be removed too
+                              collection.findOne({ '_id': id }, function(err, doc) {
+                                  if (err) {
+                                    deferred.resolve({ error: err });
+                                  }
+                                  else {
+                                    collection.remove({ _id: id },
+                                        function(err, ack) {
+                                            if (err || ack === 0) {
+                                              deferred.resolve({ error: 'Could not delete document: ' + message.content.id });
                                             }
                                             else {
-                                              deferred.resolve();
+                                              // Check for an attached file.
+                                              // Remove it from the database
+                                              if (doc.fileId) {
+                                                  new GridStore(collection.db, doc.fileId, 'r').open(function(err, gridStore) {
+                                                      if (err) {
+                                                        deferred.resolve({ error: err });
+                                                      }
+                                                      gridStore.unlink(function(err, results) {
+                                                          if (err) {
+                                                            deferred.resolve({ error: err });
+                                                          }
+                                                          else {
+                                                            deferred.resolve(results);
+                                                          }
+                                                        });
+                                                  });
+                                              }
+                                              else {
+                                                deferred.resolve();
+                                              }
                                             }
-                                          }
-                                    });
-                                }
-                              });
-
-                          }
-                        });
+                                      });
+                                  }
+                                });
+  
+                            }
+                          });
+                      }
                     }).
                   catch(function(err) {
                         deferred.resolve({ error: err });

@@ -876,8 +876,8 @@ exports.rm = {
                     { content: { data: { junk: 'I like to move it move it' } },
                       file: {
                             path: '/tmp/gebo-server-save-test-1.txt',
-                            name: 'gebo-server-save-test-1.txt',
-                            type: 'text/plain',
+                            originalname: 'gebo-server-save-test-1.txt',
+                            mimetype: 'text/plain',
                             size: 21,
                       }
                   }).
@@ -910,6 +910,49 @@ exports.rm = {
                         test.done();
                     });
    },
+
+   'Delete a file with no owner colleciton': function(test) {
+        test.expect(3);
+
+        // Save a file with no associated collection 
+        action.save({ resource: 'fs',
+                      write: true },
+                    { file: {
+                            path: '/tmp/gebo-server-save-test-1.txt',
+                            originalname: 'gebo-server-save-test-1.txt',
+                            mimetype: 'text/plain',
+                            size: 21,
+                      }
+                  }).
+                then(function(fileId) {
+                        test.ok(fileId instanceof mongo.ObjectID);
+
+                        // Remove
+                        action.rm({ resource: 'fs',
+                                    admin: false,
+                                    write: true },
+                                  { content: { id: fileId } }).
+                            then(function() {
+                                    test.ok(true, 'The doc has been deleted, I think');
+
+                                    // Make sure the associated collection is stored in the file's metadata
+                                    db.collection('fs.files').
+                                        findOne({ _id: fileId }, function(err, file) {
+                                            test.equal(file, null);
+                                            test.done();
+                                          });
+                                }).
+                            catch(function(err) {
+                                    test.ok(false, err);
+                                    test.done();
+                                 });
+                    }).
+                catch(function(err) {
+                        console.log('Error???? ' + err);       
+                        test.ifError(err);
+                        test.done();
+                    });
+    },
 };
 
 /**
