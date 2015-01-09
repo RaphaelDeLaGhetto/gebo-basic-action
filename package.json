@@ -1,7 +1,7 @@
 {
   "name": "gebo-basic-action",
   "description": "Actions common to gebo agents",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "homepage": "https://github.com/RaphaelDeLaGhetto/gebo-basic-action",
   "author": {
     "name": "Daniel Bidulock",
