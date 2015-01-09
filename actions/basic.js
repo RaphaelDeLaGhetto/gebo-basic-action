@@ -181,7 +181,7 @@ module.exports = function() {
                       // from GridStore.
                       // If this is the case, DEFAULT_ROOT_CONNECTION is expected to equal 'fs'
                       if (collection.collectionName === GridStore.DEFAULT_ROOT_COLLECTION) {
-                        new GridStore(collection.db, message.content.id, 'r').open(function(err, gridStore) {
+                        new GridStore(collection.db, new mongo.ObjectID(message.content.id), 'r').open(function(err, gridStore) {
                            if (err) {
                              deferred.resolve({ error: err });
                            }
